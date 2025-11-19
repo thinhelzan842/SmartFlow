@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5e4a6d3264ca041754cffaddc54d54af {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                top: 10px; right: 10px; width: 320px; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:14px; padding: 15px; border-radius: 5px;">
+    <h3 style="margin-top:0;">DRIVER_04</h3>
+    <b>Request:</b> REQ_STRONG_0004<br>
+    <b>Thời gian:</b> 2025-11-18 23:12:54<br>
+    <hr>
+    <b>⏱ Thời gian di chuyển:</b> 3.34 phút<br>
+    <b>📏 Quãng đường:</b> 2609m<br>
+    <b>🛣 Số đoạn đường:</b> 26<br>
+    <hr>
+    <b>Đường đi qua:</b><br>
+    Đường Cộng Hòa, Cộng Hoà, Tân Hải, Đường Tân Hải, Trường Chinh
+    </div>
+    
+    
+            <div class="folium-map" id="map_5e4a6d3264ca041754cffaddc54d54af" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5e4a6d3264ca041754cffaddc54d54af = L.map(
+                "map_5e4a6d3264ca041754cffaddc54d54af",
+                {
+                    center: [10.8030055, 106.6427295],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_cb80b620aa163e1022bce879b4963c23 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_cb80b620aa163e1022bce879b4963c23.addTo(map_5e4a6d3264ca041754cffaddc54d54af);
+        
+    
+            var marker_543974fdc2718b56d1f2359031cc0ac3 = L.marker(
+                [10.807533, 106.634689],
+                {
+}
+            ).addTo(map_5e4a6d3264ca041754cffaddc54d54af);
+        
+    
+            var icon_946d3bec583df988243664b9c3302089 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "play",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e16bd764b54171b2ad57a51746ade8cb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1ac5126cba8b47edb048537880953acf = $(`<div id="html_1ac5126cba8b47edb048537880953acf" style="width: 100.0%; height: 100.0%;"><b>Điểm A</b><br>DRIVER_04</div>`)[0];
+                popup_e16bd764b54171b2ad57a51746ade8cb.setContent(html_1ac5126cba8b47edb048537880953acf);
+            
+        
+
+        marker_543974fdc2718b56d1f2359031cc0ac3.bindPopup(popup_e16bd764b54171b2ad57a51746ade8cb)
+        ;
+
+        
+    
+    
+            marker_543974fdc2718b56d1f2359031cc0ac3.bindTooltip(
+                `<div>
+                     Xuất phát
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_543974fdc2718b56d1f2359031cc0ac3.setIcon(icon_946d3bec583df988243664b9c3302089);
+            
+    
+            var marker_be3c778a7151fdf8e5321deee504e294 = L.marker(
+                [10.798478, 106.65077],
+                {
+}
+            ).addTo(map_5e4a6d3264ca041754cffaddc54d54af);
+        
+    
+            var icon_60f736cc524fec1e601f2c09d711c152 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "stop",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_881ec0415a197ed9c7ffe394328e4acd = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_971bc88bba1d3113fd6ab7c76f1f058b = $(`<div id="html_971bc88bba1d3113fd6ab7c76f1f058b" style="width: 100.0%; height: 100.0%;"><b>Điểm B</b><br>DRIVER_04</div>`)[0];
+                popup_881ec0415a197ed9c7ffe394328e4acd.setContent(html_971bc88bba1d3113fd6ab7c76f1f058b);
+            
+        
+
+        marker_be3c778a7151fdf8e5321deee504e294.bindPopup(popup_881ec0415a197ed9c7ffe394328e4acd)
+        ;
+
+        
+    
+    
+            marker_be3c778a7151fdf8e5321deee504e294.bindTooltip(
+                `<div>
+                     Đích
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_be3c778a7151fdf8e5321deee504e294.setIcon(icon_60f736cc524fec1e601f2c09d711c152);
+            
+    
+            var poly_line_16b753ceb7d110d2ffd902cca42d01a2 = L.polyline(
+                [[10.8073303, 106.6348602], [10.8071419, 106.6350298], [10.8068534, 106.6353205], [10.8041927, 106.6375256], [10.8034106, 106.6380592], [10.8026736, 106.6384427], [10.7999467, 106.6402676], [10.7998935, 106.6402394], [10.7994043, 106.6411471], [10.7989768, 106.6419389], [10.7980264, 106.6437296], [10.7978645, 106.6440313], [10.7968902, 106.6458437], [10.7963946, 106.6467667], [10.7963062, 106.6469313], [10.7963674, 106.6469636], [10.797365, 106.6470631], [10.7973117, 106.647329], [10.7974877, 106.6479055], [10.7967282, 106.6489786], [10.7977201, 106.6496075], [10.7976879, 106.6502283], [10.7976585, 106.6507599], [10.7977469, 106.6507672], [10.798109, 106.650797], [10.7981956, 106.650804], [10.7986257, 106.6508395]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_5e4a6d3264ca041754cffaddc54d54af);
+        
+</script>
+</html>

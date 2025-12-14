@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFlow - Hệ thống định tuyến thông minh</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Control Panel - Left Side -->
+        <div class="control-panel">
+            <!-- Header -->
+            <header>
+                <h1>🚗 SmartFlow</h1>
+                <p>Định tuyến thông minh</p>
+            </header>
+
+            <div class="control-section">
+                <h3>📍 Chế độ</h3>
+                <div class="mode-buttons">
+                    <button id="modeRoute" class="btn btn-primary active">Tìm đường</button>
+                    <button id="modeCongestion" class="btn btn-secondary">Thêm tắc đường</button>
+                </div>
+                <p class="mode-hint" id="modeHint">Click 2 điểm trên bản đồ để tìm đường</p>
+            </div>
+
+            <div class="control-section">
+                <h3>⚙️ Tham số BPR</h3>
+                <div class="param-group">
+                    <label for="alphaInput">Alpha (α):</label>
+                    <input type="number" id="alphaInput" value="1.5" step="0.1" min="0.1" max="5">
+                    <span class="param-value" id="alphaValue">1.5</span>
+                </div>
+                <div class="param-group">
+                    <label for="betaInput">Beta (β):</label>
+                    <input type="number" id="betaInput" value="8" step="1" min="1" max="15">
+                    <span class="param-value" id="betaValue">8</span>
+                </div>
+                <div class="param-group">
+                    <label for="capacityInput">Dung lượng:</label>
+                    <input type="number" id="capacityInput" value="0.4" step="0.1" min="0.1" max="1">
+                    <span class="param-value" id="capacityValue">40%</span>
+                </div>
+                <button id="updateParams" class="btn btn-update">Cập nhật tham số</button>
+            </div>
+
+            <div class="control-section">
+                <h3>🔄 Thao tác</h3>
+                <button id="clearRoute" class="btn btn-clear">Xóa tuyến đường</button>
+                <button id="resetCongestion" class="btn btn-reset">Reset tắc đường</button>
+            </div>
+
+            <div class="control-section info-section">
+                <h3>ℹ️ Thông tin</h3>
+                <div id="routeInfo" class="info-box">
+                    <p><strong>Khoảng cách:</strong> <span id="infoDistance">-</span></p>
+                    <p><strong>Thời gian:</strong> <span id="infoTime">-</span></p>
+                    <p><strong>Số đoạn:</strong> <span id="infoSegments">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container - Right Side -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span id="statusText">Sẵn sàng</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Congestion Modal -->
+    <div id="congestionModal" class="modal">
+        <div class="modal-content">
+            <h3>Thêm tắc đường</h3>
+            <p>Nhập số lượng xe để mô phỏng tắc nghẽn:</p>
+            <input type="number" id="vehicleCount" min="1" max="1000" value="10" placeholder="Số lượng xe">
+            <div class="modal-buttons">
+                <button id="confirmCongestion" class="btn btn-primary">Xác nhận</button>
+                <button id="cancelCongestion" class="btn btn-secondary">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

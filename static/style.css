@@ -1,0 +1,359 @@
+/* SmartFlow Styling */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    padding: 0;
+    gap: 0;
+}
+
+/* Header */
+header {
+    background: white;
+    padding: 15px 10px;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+header h1 {
+    color: #667eea;
+    font-size: 1.3em;
+    margin-bottom: 3px;
+}
+
+header p {
+    color: #666;
+    font-size: 0.85em;
+}
+
+/* Control Panel */
+.control-panel {
+    width: 25%;
+    min-width: 280px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: #f5f5f5;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.control-section {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.control-section h3 {
+    color: #667eea;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: all 0.3s;
+    margin: 3px 0;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-update {
+    background: #3498db;
+    color: white;
+    width: 100%;
+}
+
+.btn-update:hover {
+    background: #2980b9;
+}
+
+.btn-clear {
+    background: #e74c3c;
+    color: white;
+    width: 100%;
+}
+
+.btn-clear:hover {
+    background: #c0392b;
+}
+
+.btn-reset {
+    background: #f39c12;
+    color: white;
+    width: 100%;
+}
+
+.btn-reset:hover {
+    background: #e67e22;
+}
+
+.btn.active {
+    background: #27ae60;
+    color: white;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+    font-weight: bold;
+}
+
+/* Drawing Mode Button */
+#drawModeBtn.active {
+    background: #FF6B00;
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.6);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 107, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 107, 0, 0.8);
+    }
+}
+
+/* Map cursor when drawing */
+#map.drawing-mode {
+    cursor: crosshair !important;
+}
+
+/* Mode Buttons */
+.mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mode-hint {
+    margin-top: 8px;
+    padding: 6px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    font-size: 0.8em;
+    color: #555;
+}
+
+/* Parameter Controls */
+.param-group {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.param-group label {
+    font-weight: 600;
+    min-width: 80px;
+    font-size: 0.85em;
+    color: #555;
+}
+
+.param-group input {
+    flex: 1;
+    padding: 6px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 0.85em;
+}
+
+.param-group input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.param-value {
+    min-width: 45px;
+    font-weight: 700;
+    font-size: 0.85em;
+    color: #667eea;
+}
+
+/* Info Section */
+.info-section {
+    background: #f8f9fa;
+}
+
+.info-box p {
+    margin: 6px 0;
+    font-size: 0.85em;
+    color: #555;
+}
+
+.info-box strong {
+    color: #333;
+}
+
+.info-box span {
+    color: #667eea;
+    font-weight: 700;
+}
+
+/* Map Container */
+.map-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Map */
+#map {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
+
+/* Status Bar */
+.status-bar {
+    background: white;
+    padding: 8px 15px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#statusText {
+    color: #555;
+    font-weight: 600;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    min-width: 300px;
+}
+
+.modal-content h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Leaflet Custom Styles */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+}
+
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .control-panel {
+        flex-direction: column;
+    }
+    
+    header h1 {
+        font-size: 1.5em;
+    }
+    
+    .mode-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Loading Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(102, 126, 234, 0.3);
+    border-radius: 50%;
+    border-top-color: #667eea;
+    animation: spin 1s ease-in-out infinite;
+}

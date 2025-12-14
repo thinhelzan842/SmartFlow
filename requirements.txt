@@ -1,0 +1,7 @@
+Flask==3.0.0
+osmnx==1.9.2
+networkx==3.2.1
+pandas==2.1.4
+numpy==1.26.2
+folium==0.15.1
+matplotlib==3.8.2

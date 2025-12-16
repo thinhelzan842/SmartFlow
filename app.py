@@ -347,6 +347,8 @@ def status():
         }), 500
 
 if __name__ == '__main__':
+    import os
+    
     print("=" * 60)
     print("SmartFlow Traffic Routing System")
     print("=" * 60)
@@ -354,11 +356,19 @@ if __name__ == '__main__':
     
     # Pre-initialize routing system
     init_routing_system()
-        git pull origin main
     print("\n✓ System ready!")
     print("=" * 60)
     print("\nStarting web server...")
-    print("Open http://localhost:5000 in your browser")
+    
+    # Production-ready configuration
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('DEBUG', 'False').lower() == 'true'
+    
+    if debug:
+        print("Open http://localhost:{} in your browser".format(port))
+    else:
+        print("Running in production mode on port {}".format(port))
+    
     print("=" * 60)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=debug, host='0.0.0.0', port=port)

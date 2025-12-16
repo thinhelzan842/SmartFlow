@@ -354,7 +354,7 @@ if __name__ == '__main__':
     
     # Pre-initialize routing system
     init_routing_system()
-    
+        git pull origin main
     print("\n✓ System ready!")
     print("=" * 60)
     print("\nStarting web server...")

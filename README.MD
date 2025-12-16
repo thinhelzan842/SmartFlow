@@ -133,7 +133,7 @@ Cập nhật tham số BPR
 | Mô phỏng tắc nghẽn | ✅ | ⚠️ Chỉ hiển thị |
 | Điều chỉnh tham số | ✅ | ❌ |
 | Dữ liệu địa phương | ✅ OSM | ✅ Google |
-| Real-time routing | ✅ | ✅ |
+| Real-time routing | ❌ | ✅ |
 
 ---
 

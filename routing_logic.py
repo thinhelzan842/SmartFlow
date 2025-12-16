@@ -20,9 +20,8 @@ DEFAULT_BETA = 8
 DEFAULT_CAPACITY_FACTOR = 0.4
 
 # Configuration
-# ✅ MỞ RỘNG RA TOÀN TP.HCM
-PLACE_NAME = 'Ho Chi Minh City, Vietnam'
-GRAPH_CACHE_FILE = 'graph_hcmc_full.gpickle'
+PLACE_NAME = 'Tan Binh District, Ho Chi Minh City, Vietnam'
+GRAPH_CACHE_FILE = 'graph_with_congestion.gpickle'
 
 
 def calculate_bpr_weight(We_base: float, fe: float, Ce: float, alpha: float, beta: float) -> float:
@@ -379,76 +378,82 @@ def initialize_graph_for_routing(G: nx.MultiDiGraph, capacity_factor: float = 1.
 def load_or_create_graph() -> nx.MultiDiGraph:
     """Load graph from cache or create new one from OSM."""
     if os.path.exists(GRAPH_CACHE_FILE):
-        print(f"✓ Loading graph from cache: {GRAPH_CACHE_FILE}")
+        print(f"Loading graph from cache: {GRAPH_CACHE_FILE}")
         with open(GRAPH_CACHE_FILE, 'rb') as f:
             G = pickle.load(f)
         
         # Convert to largest strongly connected component for routing
         if not nx.is_strongly_connected(G):
-            print("⏳ Graph is not strongly connected, extracting largest component...")
+            print("Graph is not strongly connected, extracting largest component...")
             largest_scc = max(nx.strongly_connected_components(G), key=len)
             G = G.subgraph(largest_scc).copy()
-            print(f"✓ Using largest component: {len(G.nodes):,} nodes, {len(G.edges):,} edges")
+            print(f"Using largest component: {len(G.nodes)} nodes, {len(G.edges)} edges")
         else:
-            print(f"✓ Graph is strongly connected: {len(G.nodes):,} nodes, {len(G.edges):,} edges")
+            print(f"Graph is strongly connected: {len(G.nodes)} nodes, {len(G.edges)} edges")
         
         return G
     else:
-        print("=" * 70)
-        print(f"🗺️  CREATING NEW GRAPH FROM OPENSTREETMAP")
-        print("=" * 70)
-        print(f"📍 Location: {PLACE_NAME}")
-        print(f"⚠️  This is the FIRST TIME - will take 5-15 minutes")
-        print(f"💾 Cache will be saved to: {GRAPH_CACHE_FILE}")
-        print(f"⏰ Next time will load instantly from cache!")
-        print("=" * 70)
-        
+        print(f"Creating new graph from OSM: {PLACE_NAME}")
         ox.settings.use_cache = True
-        ox.settings.log_console = True  # ✅ Show download progress
-        
-        print("\n⏳ Step 1/4: Downloading map data from OpenStreetMap...")
-        print("   (This may take 5-15 minutes depending on area size)")
+        ox.settings.log_console = False
         G = ox.graph_from_place(PLACE_NAME, network_type='drive')
-        print(f"✓ Downloaded: {len(G.nodes):,} nodes, {len(G.edges):,} edges")
         
         # Extract largest strongly connected component
-        print("\n⏳ Step 2/4: Analyzing graph connectivity...")
         if not nx.is_strongly_connected(G):
-            print("   Graph has disconnected components, extracting largest...")
+            print("Extracting largest strongly connected component...")
             largest_scc = max(nx.strongly_connected_components(G), key=len)
-            original_nodes = len(G.nodes)
-            original_edges = len(G.edges)
             G = G.subgraph(largest_scc).copy()
-            print(f"✓ Extracted largest component:")
-            print(f"   Before: {original_nodes:,} nodes, {original_edges:,} edges")
-            print(f"   After:  {len(G.nodes):,} nodes, {len(G.edges):,} edges")
-            print(f"   Kept:   {len(G.nodes)/original_nodes*100:.1f}% of nodes")
-        else:
-            print("✓ Graph is fully connected - no filtering needed")
         
         # Save to cache
-        print("\n⏳ Step 3/4: Saving to cache...")
-        print(f"   File: {GRAPH_CACHE_FILE}")
         with open(GRAPH_CACHE_FILE, 'wb') as f:
             pickle.dump(G, f)
         
-        # Get file size
-        file_size_mb = os.path.getsize(GRAPH_CACHE_FILE) / (1024 * 1024)
-        print(f"✓ Cache saved: {file_size_mb:.1f} MB")
-        
-        print("\n⏳ Step 4/4: Final verification...")
-        print(f"✓ Graph ready: {len(G.nodes):,} nodes, {len(G.edges):,} edges")
-        print("\n" + "=" * 70)
-        print("✅ GRAPH CREATION COMPLETE!")
-        print("💡 Next time you run, it will load from cache in seconds!")
-        print("=" * 70 + "\n")
-        
+        print(f"Graph created: {len(G.nodes)} nodes, {len(G.edges)} edges")
         return G
 
 
-def find_nearest_node(G: nx.MultiDiGraph, lat: float, lon: float) -> int:
-    """Find nearest node in graph to given coordinates."""
-    return ox.distance.nearest_nodes(G, lon, lat)
+def find_nearest_node(G: nx.MultiDiGraph, lat: float, lon: float, consider_direction: bool = False) -> int:
+    """
+    Tìm node gần nhất với tọa độ cho trước.
+    
+    Args:
+        G: Đồ thị có hướng
+        lat, lon: Tọa độ cần tìm
+        consider_direction: Nếu True, tìm node có edge đi RA (outgoing) gần nhất
+                          Giúp chọn đúng làn đường khi có đường 1 chiều
+    
+    Returns:
+        Node ID gần nhất
+    """
+    if not consider_direction:
+        # Tìm node gần nhất đơn giản (như cũ)
+        return ox.distance.nearest_nodes(G, lon, lat)
+    
+    # ✅ TÌM NODE CÓ XÉT HƯỚNG ĐƯỜNG
+    # Bước 1: Tìm node gần nhất
+    nearest_node = ox.distance.nearest_nodes(G, lon, lat)
+    
+    # Lấy danh sách các node trong bán kính 50m
+    nearby_nodes = []
+    for node in G.nodes():
+        node_data = G.nodes[node]
+        dist = ox.distance.great_circle(lat, lon, node_data['y'], node_data['x'])
+        if dist <= 50:  # 50 mét
+            nearby_nodes.append((node, dist))
+    
+    if not nearby_nodes:
+        return nearest_node
+    
+    # Bước 2: Trong các nodes gần, ưu tiên node có outgoing edges (có đường đi)
+    nearby_nodes.sort(key=lambda x: x[1])  # Sort theo khoảng cách
+    
+    for node, dist in nearby_nodes:
+        # Kiểm tra node có đường đi ra không
+        if G.out_degree(node) > 0:
+            return node
+    
+    # Nếu không có node nào có outgoing edge, trả về gần nhất
+    return nearest_node
 
 
 def point_to_line_distance(px: float, py: float, x1: float, y1: float, x2: float, y2: float) -> float:
@@ -658,44 +663,65 @@ class SmartRoutingSystem:
             self.congestion_graph.add_node(node, **data)
         
         print(f"Routing system initialized with α={alpha}, β={beta}, capacity={capacity_factor}")
-        print(f"Graph: {len(self.G.nodes):,} nodes, {len(self.G.edges):,} edges")
-        print(f"Congestion graph: {len(self.congestion_graph.nodes):,} nodes (undirected)")
-        
-        # ✅ TÍNH TOÁN COVERAGE AREA
-        lats = [data['y'] for _, data in self.G.nodes(data=True)]
-        lons = [data['x'] for _, data in self.G.nodes(data=True)]
-        lat_range = max(lats) - min(lats)
-        lon_range = max(lons) - min(lons)
-        
-        print(f"Coverage area: {lat_range:.3f}° × {lon_range:.3f}° (lat × lon)")
-        print(f"Approximate: {lat_range*111:.1f}km × {lon_range*111:.1f}km")
-        print("=" * 70)
+        print(f"Graph: {len(self.G.nodes)} nodes, {len(self.G.edges)} edges")
+        print(f"Congestion graph: {len(self.congestion_graph.nodes)} nodes (undirected)")
     
     def find_route(self, start_lat: float, start_lon: float, 
                    end_lat: float, end_lon: float, num_search: int = 20, 
-                   num_display: int = 2) -> Dict:
+                   num_display: int = 3, max_detour_meters: float = 500) -> Dict:
         """
-        Tìm nhiều lộ trình khác nhau (như notebook cho nhiều tài xế).
+        Tìm 2-3 lộ trình tốt nhất với điều kiện không vượt quá độ lệch cho phép so với lộ trình thông thoáng.
         
         Quy trình:
-        1. Tìm 20 lộ trình (mỗi lần tăng load → đường tiếp theo khác)
-        2. So sánh 20 lộ trình → chọn 1-2 đường nhanh nhất
-        3. Trả về 1-2 đường tốt nhất để hiển thị
+        1. Tìm lộ trình tối ưu khi KHÔNG có tắc nghẽn (baseline/thông thoáng)
+        2. Áp dụng tắc nghẽn, tìm tối đa num_search lộ trình
+        3. Lọc: Chỉ giữ lộ trình có độ dài <= baseline_distance + max_detour_meters
+        4. Chọn 2-3 đường tốt nhất: nhanh nhất thời gian, ngắn nhất khoảng cách
         
         Args:
             start_lat, start_lon: Tọa độ xuất phát
             end_lat, end_lon: Tọa độ đích
-            num_search: Số lộ trình tìm kiếm (mặc định: 20)
-            num_display: Số lộ trình hiển thị tốt nhất (mặc định: 2)
+            num_search: Số lộ trình tìm kiếm tối đa (mặc định: 20)
+            num_display: Số lộ trình hiển thị tốt nhất (mặc định: 3)
+            max_detour_meters: Độ lệch tối đa (mét) so với lộ trình thông thoáng (mặc định: 500m)
         
         Returns:
-            Dict với danh sách 1-2 routes tốt nhất
+            Dict với 2-3 routes tốt nhất thỏa mãn điều kiện độ lệch
         """
-        # Find nearest nodes
-        start_node = find_nearest_node(self.G, start_lat, start_lon)
-        end_node = find_nearest_node(self.G, end_lat, end_lon)
+        # Find nearest nodes với xét hướng đường (tránh chọn sai làn)
+        start_node = find_nearest_node(self.G, start_lat, start_lon, consider_direction=True)
+        end_node = find_nearest_node(self.G, end_lat, end_lon, consider_direction=False)
         
-        # ✅ ÁP DỤNG CONGESTION từ đồ thị không hướng sang đồ thị có hướng
+        # ✅ BƯỚC 1: TÌM LỘ TRÌNH THÔNG THOÁNG (baseline - không có tắc nghẽn)
+        print("🔍 Tìm lộ trình thông thoáng (baseline)...")
+        try:
+            # Tạm thời clear congestion để tìm đường thông thoáng
+            temp_congestion_edges = []
+            for u, v, k in self.G.edges(keys=True):
+                if self.G[u][v][k].get('fe', 0) > 0:
+                    temp_congestion_edges.append((u, v, k, self.G[u][v][k]['fe']))
+                    self.G[u][v][k]['fe'] = 0
+            
+            update_edge_weights(self.G, self.alpha, self.beta)
+            baseline_path = nx.shortest_path(self.G, start_node, end_node, weight='weight')
+            baseline_cost = nx.shortest_path_length(self.G, start_node, end_node, weight='weight')
+            baseline_geometries = get_path_geometry(self.G, baseline_path)
+            baseline_stats = calculate_path_stats(self.G, baseline_path, baseline_cost)
+            baseline_distance = baseline_stats['distance']
+            
+            print(f"📏 Lộ trình thông thoáng: {baseline_distance:.0f}m")
+            
+            # Restore congestion
+            for u, v, k, fe_val in temp_congestion_edges:
+                self.G[u][v][k]['fe'] = fe_val
+                
+        except nx.NetworkXNoPath:
+            return {
+                'success': False,
+                'message': 'Không tìm thấy đường đi giữa 2 điểm'
+            }
+        
+        # ✅ BƯỚC 2: ÁP DỤNG CONGESTION và tìm các lộ trình thay thế
         self._apply_congestion_to_directed_graph()
         
         # ✅ LƯU TRẠNG THÁI BAN ĐẦU để restore sau khi tìm
@@ -748,12 +774,30 @@ class SmartRoutingSystem:
                 'message': 'Không tìm thấy đường đi giữa 2 điểm'
             }
         
-        # ✅ PHÂN LOẠI theo 2 tiêu chí
+        # ✅ BƯỚC 3: LỌC THEO ĐỘ LỆCH - Chỉ giữ routes không vượt quá baseline + max_detour_meters
+        max_allowed_distance = baseline_distance + max_detour_meters
+        valid_routes = [r for r in all_routes if r['distance'] <= max_allowed_distance]
+        
+        print(f"📐 Độ lệch cho phép: {max_detour_meters:.0f}m → Khoảng cách tối đa: {max_allowed_distance:.0f}m")
+        print(f"✓ Tìm được {len(all_routes)} lộ trình, {len(valid_routes)} thỏa mãn độ lệch")
+        
+        # ✅ Nếu không tìm được route nào thỏa mãn
+        if not valid_routes:
+            shortest_found = min(all_routes, key=lambda r: r['distance'])
+            return {
+                'success': False,
+                'message': f'Không tìm được lộ trình nào trong độ lệch {max_detour_meters:.0f}m. Lộ trình thông thoáng: {baseline_distance:.0f}m. Lộ trình ngắn nhất tìm được: {shortest_found["distance"]:.0f}m (vượt {shortest_found["distance"] - max_allowed_distance:.0f}m)',
+                'baseline_distance': baseline_distance,
+                'max_allowed_distance': max_allowed_distance,
+                'shortest_found': shortest_found['distance']
+            }
+        
+        # ✅ BƯỚC 4: CHỌN 2-3 ĐƯỜNG TỐT NHẤT
         # 1. Nhanh nhất về THỜI GIAN (BPR weight)
-        routes_by_time = sorted(all_routes, key=lambda r: r['time'])
+        routes_by_time = sorted(valid_routes, key=lambda r: r['time'])
         
         # 2. Ngắn nhất về KHOẢNG CÁCH (km)
-        routes_by_distance = sorted(all_routes, key=lambda r: r['distance'])
+        routes_by_distance = sorted(valid_routes, key=lambda r: r['distance'])
         
         # ✅ CHỌN ĐƯỜNG ĐỀ XUẤT (2-3 đường)
         selected_routes = []
@@ -782,15 +826,19 @@ class SmartRoutingSystem:
                 second_fastest['rank'] = 3
                 selected_routes.append(second_fastest)
         
-        print(f"✓ Tìm được {len(all_routes)} lộ trình, đề xuất {len(selected_routes)} đường:")
-        for i, route in enumerate(selected_routes):
-            print(f"  {route['recommendation']}: {route['distance']:.0f}m, {route['time']/60:.1f} phút")
+        print(f"📦 Đề xuất {len(selected_routes)} đường:")
+        for route in selected_routes:
+            detour = route['distance'] - baseline_distance
+            print(f"  {route['recommendation']}: {route['distance']:.0f}m (+{detour:.0f}m), {route['time']/60:.1f} phút")
         
         return {
             'success': True,
             'num_routes_found': len(all_routes),
             'num_routes_display': len(selected_routes),
             'routes': selected_routes,
+            'baseline_distance': baseline_distance,
+            'max_allowed_distance': max_allowed_distance,
+            'max_detour_meters': max_detour_meters,
             'start_node': start_node,
             'end_node': end_node
         }
@@ -909,10 +957,6 @@ class SmartRoutingSystem:
             if self.G.has_edge(v, u):
                 for k in self.G[v][u]:
                     self.G[v][u][k]['fe'] = effective_load
-        
-        # ✅ CẬP NHẬT TRỌNG SỐ BPR NGAY SAU KHI GÁN fe
-        # Điều này đảm bảo weight được tính lại theo công thức BPR
-        update_edge_weights(self.G, self.alpha, self.beta)
     
     def add_congestion_freehand(self, polygon: List[List[float]], vehicle_count: int) -> Dict:
         """

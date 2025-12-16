@@ -33,6 +33,13 @@
             <div class="control-section">
                 <h3>⚙️ Tham số BPR</h3>
                 <div class="param-group">
+                    <label for="maxDetourMeters">Độ lệch tối đa (m):</label>
+                    <input type="number" id="maxDetourMeters" value="500" step="100" min="0" max="5000">
+                    <span class="param-value" id="maxDetourMetersValue">500m</span>
+                </div>
+                <p class="param-hint">Lộ trình không vượt quá lộ trình thông thoáng + X mét</p>
+                
+                <div class="param-group">
                     <label for="alphaInput">Alpha (α):</label>
                     <input type="number" id="alphaInput" value="1.5" step="0.1" min="0.1" max="5">
                     <span class="param-value" id="alphaValue">1.5</span>

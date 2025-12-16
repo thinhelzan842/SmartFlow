@@ -73,9 +73,10 @@ def find_route():
                     'message': f'Missing required field: {field}'
                 }), 400
         
-        # Get parameters (defaults: tìm 20, hiển thị 2)
+        # Get parameters (defaults: tìm 20, hiển thị 3, độ lệch 500m)
         num_search = int(data.get('num_search', 20))
-        num_display = int(data.get('num_display', 2))
+        num_display = int(data.get('num_display', 3))
+        max_detour_meters = float(data.get('max_detour_meters', 500))
         
         # Find routes
         result = routing_system.find_route(
@@ -84,7 +85,8 @@ def find_route():
             end_lat=float(data['end_lat']),
             end_lon=float(data['end_lon']),
             num_search=num_search,
-            num_display=num_display
+            num_display=num_display,
+            max_detour_meters=max_detour_meters
         )
         
         return jsonify(result)

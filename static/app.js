@@ -153,30 +153,13 @@ function clearCongestionPoints() {
 // Confirm congestion path
 function confirmCongestionPath() {
     if (congestionPoints.length < 2) {
-        alert('Vui lòng chọn ít nhất 2 điểm để đánh dấu tắc nghẽn!');
+        alert('Vui lòng chọn ít nhất 2 điểm!');
         return;
     }
     
-    // ✅ HIỂN THỊ MODAL NHẬP SỐ XE
-    const modal = document.getElementById('congestionModal');
-    if (!modal) {
-        console.error('❌ Modal congestionModal not found!');
-        alert('Lỗi: Không tìm thấy modal nhập số xe');
-        return;
-    }
-    
-    // Hiển thị modal
-    modal.classList.add('active');
-    
-    // Focus vào input và set giá trị mặc định
-    const input = document.getElementById('vehicleCount');
-    if (input) {
-        input.value = 50;  // Default 50 xe
-        input.focus();
-        input.select();  // Chọn toàn bộ text để dễ nhập
-    }
-    
-    updateStatus('Nhập số lượng xe (1-1000) và nhấn Enter hoặc Xác nhận');
+    // Show modal to input vehicle count
+    document.getElementById('congestionModal').classList.add('active');
+    document.getElementById('vehicleCount').focus();
 }
 
 
@@ -184,7 +167,16 @@ function confirmCongestionPath() {
 // Find route
 async function findRoute() {
     try {
-        updateStatus('Đang tìm 20 lộ trình và so sánh...');
+        // ✅ LẤY GIÁ TRỊ ĐỘ LỆCH TỪ INPUT
+        const maxDetourMetersInput = document.getElementById('maxDetourMeters');
+        const maxDetourMeters = maxDetourMetersInput ? parseFloat(maxDetourMetersInput.value) : 500;
+        
+        if (isNaN(maxDetourMeters) || maxDetourMeters < 0) {
+            alert('Vui lòng nhập độ lệch hợp lệ (>= 0)');
+            return;
+        }
+        
+        updateStatus(`Đang tìm lộ trình (độ lệch tối đa: ${maxDetourMeters.toFixed(0)}m)...`);
         
         const response = await fetch('/api/find_route', {
             method: 'POST',
@@ -196,30 +188,33 @@ async function findRoute() {
                 start_lon: startPoint.lon,
                 end_lat: endPoint.lat,
                 end_lon: endPoint.lon,
-                num_search: 20,    // Tìm 20 lộ trình
-                num_display: 2     // Hiển thị 2 đường nhanh nhất
+                num_search: 20,
+                num_display: 3,
+                max_detour_meters: maxDetourMeters
             })
         });
         
         const data = await response.json();
         
         if (data.success) {
-            // Draw 1-3 best routes
+            // Hiển thị 2-3 routes tốt nhất
             drawMultipleRoutes(data.routes);
             
-            // Update info with best route
+            // Update info with first route
             if (data.routes && data.routes.length > 0) {
                 updateRouteInfo(data.routes[0]);
                 
-                const routeDescriptions = data.routes.map((r, i) => 
-                    `${r.recommendation || `Đường ${i+1}`}: ${r.distance.toFixed(0)}m, ${(r.time/60).toFixed(1)}p`
-                ).join(' | ');
+                const baselineInfo = `Thông thoáng: ${data.baseline_distance.toFixed(0)}m`;
+                const routeDescriptions = data.routes.map((r, i) => {
+                    const detour = r.distance - data.baseline_distance;
+                    return `${r.recommendation}: ${r.distance.toFixed(0)}m (+${detour.toFixed(0)}m), ${(r.time/60).toFixed(1)}p`;
+                }).join(' | ');
                 
-                updateStatus(`✓ Tìm ${data.num_routes_found} lộ trình, đề xuất ${data.num_routes_display}: ${routeDescriptions}`);
+                updateStatus(`✓ ${baselineInfo} | ${routeDescriptions}`);
             }
         } else {
-            updateStatus('Không tìm thấy đường đi: ' + data.message);
-            alert('Không tìm thấy đường đi giữa 2 điểm này!');
+            updateStatus('Không tìm được lộ trình: ' + data.message);
+            alert(data.message || 'Không tìm được lộ trình thỏa mãn độ lệch!');
         }
     } catch (error) {
         console.error('Error finding route:', error);
@@ -463,6 +458,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Parameter inputs - update display
+    document.getElementById('maxDetourMeters').addEventListener('input', function() {
+        document.getElementById('maxDetourMetersValue').textContent = this.value + 'm';
+    });
+    
     document.getElementById('alphaInput').addEventListener('input', function() {
         document.getElementById('alphaValue').textContent = this.value;
     });

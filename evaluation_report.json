@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-12-28 15:02:31",
+  "overall_score": 85.16783216783216,
+  "grade": "A",
+  "description": "Very Good",
+  "routing_quality": {
+    "diversity": 0.4653263403263403,
+    "quality": 1.0,
+    "avoidance": 1.0
+  },
+  "performance": {
+    "avg_response_time": 0.133048152923584,
+    "min_response_time": 0.06715679168701172,
+    "max_response_time": 0.21893954277038574
+  },
+  "bpr_accuracy": {
+    "mean_absolute_error": 0.4147008813370846,
+    "max_error": 0.794287398125
+  },
+  "score_breakdown": {
+    "routing_quality": 97.91958041958041,
+    "performance": 100,
+    "bpr_accuracy": 40,
+    "ux": 80
+  },
+  "test_cases_count": 3
+}

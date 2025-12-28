@@ -123,10 +123,6 @@ def astar_shortest_path_simple(G: nx.MultiDiGraph, source: int, target: int,
     
     return [], float('inf')
 
-
-
-
-
 def dijkstra_shortest_path(G: nx.MultiDiGraph, source: int, target: int) -> Tuple[List, float]:
     """Find shortest path using Dijkstra's algorithm with current weights."""
     try:

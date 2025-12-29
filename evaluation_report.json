@@ -1,27 +1,59 @@
 {
-  "timestamp": "2025-12-28 15:02:31",
-  "overall_score": 85.16783216783216,
+  "timestamp": "2025-12-29 16:13:31",
+  "test_suite": {
+    "total_cases": 30,
+    "coverage": {
+      "distance": {
+        "short_distance": 10,
+        "medium_distance": 10,
+        "long_distance": 10
+      },
+      "congestion": {
+        "no_congestion": 6,
+        "light_congestion": 8,
+        "medium_congestion": 8,
+        "heavy_congestion": 8
+      }
+    },
+    "geographic_coverage": {
+      "north_south": 10,
+      "east_west": 10,
+      "diagonal": 10
+    },
+    "statistical_significance": {
+      "sample_size": 30,
+      "confidence_level": "95%",
+      "margin_of_error": "±18%"
+    }
+  },
+  "overall_score": 84.96344913059566,
   "grade": "A",
   "description": "Very Good",
   "routing_quality": {
-    "diversity": 0.4653263403263403,
-    "quality": 1.0,
+    "diversity": 0.4159608558548044,
+    "quality": 0.9955879380622521,
     "avoidance": 1.0
   },
   "performance": {
-    "avg_response_time": 0.133048152923584,
-    "min_response_time": 0.06715679168701172,
-    "max_response_time": 0.21893954277038574
+    "avg_response_time": 0.13505477746327715,
+    "min_response_time": 0.06349611282348633,
+    "max_response_time": 0.2516462802886963
   },
   "bpr_accuracy": {
     "mean_absolute_error": 0.4147008813370846,
     "max_error": 0.794287398125
   },
+  "ux": {
+    "success_rate": 0.9583333333333334,
+    "avg_detour": 0.985058983234627,
+    "avg_complexity": 44.78260869565217,
+    "response_cv": 0.33259907259259247,
+    "overall_score": 90.33333333333334
+  },
   "score_breakdown": {
-    "routing_quality": 97.91958041958041,
+    "routing_quality": 94.82528949315582,
     "performance": 100,
     "bpr_accuracy": 40,
-    "ux": 80
-  },
-  "test_cases_count": 3
+    "ux": 90.33333333333334
+  }
 }

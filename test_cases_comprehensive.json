@@ -1,0 +1,726 @@
+{
+  "metadata": {
+    "description": "Comprehensive test cases for SmartFlow routing evaluation",
+    "total_cases": 30,
+    "coverage": {
+      "distance": {
+        "short_distance": 10,
+        "medium_distance": 10,
+        "long_distance": 10
+      },
+      "congestion": {
+        "no_congestion": 6,
+        "light_congestion": 8,
+        "medium_congestion": 8,
+        "heavy_congestion": 8
+      }
+    },
+    "geographic_coverage": {
+      "north_south": 10,
+      "east_west": 10,
+      "diagonal": 10
+    },
+    "statistical_significance": {
+      "sample_size": 30,
+      "confidence_level": "95%",
+      "margin_of_error": "±18%"
+    }
+  },
+  "test_cases": [
+    {
+      "id": 1,
+      "name": "Short-1: No congestion (North-South)",
+      "category": "short_distance",
+      "start_lat": 10.8006,
+      "start_lon": 106.6503,
+      "end_lat": 10.8050,
+      "end_lon": 106.6550,
+      "congestion": [],
+      "expected_distance": "< 700m",
+      "direction": "north_south"
+    },
+    {
+      "id": 2,
+      "name": "Short-2: Light congestion (1 zone)",
+      "category": "short_distance",
+      "start_lat": 10.8000,
+      "start_lon": 106.6500,
+      "end_lat": 10.8040,
+      "end_lon": 106.6540,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8020, "lon": 106.6520},
+            {"lat": 10.8025, "lon": 106.6525}
+          ],
+          "vehicle_count": 50
+        }
+      ],
+      "expected_avoidance": 0.8,
+      "direction": "diagonal"
+    },
+    {
+      "id": 3,
+      "name": "Short-3: Medium congestion (2 zones)",
+      "category": "short_distance",
+      "start_lat": 10.8010,
+      "start_lon": 106.6510,
+      "end_lat": 10.8055,
+      "end_lon": 106.6555,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8020, "lon": 106.6520},
+            {"lat": 10.8025, "lon": 106.6525}
+          ],
+          "vehicle_count": 80
+        },
+        {
+          "points": [
+            {"lat": 10.8035, "lon": 106.6535},
+            {"lat": 10.8040, "lon": 106.6540}
+          ],
+          "vehicle_count": 70
+        }
+      ],
+      "expected_avoidance": 0.85,
+      "direction": "diagonal"
+    },
+    {
+      "id": 4,
+      "name": "Short-4: No congestion (East-West)",
+      "category": "short_distance",
+      "start_lat": 10.8020,
+      "start_lon": 106.6480,
+      "end_lat": 10.8025,
+      "end_lon": 106.6530,
+      "congestion": [],
+      "expected_distance": "< 600m",
+      "direction": "east_west"
+    },
+    {
+      "id": 5,
+      "name": "Short-5: Heavy congestion (3 zones)",
+      "category": "short_distance",
+      "start_lat": 10.7995,
+      "start_lon": 106.6495,
+      "end_lat": 10.8045,
+      "end_lon": 106.6545,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8005, "lon": 106.6505},
+            {"lat": 10.8010, "lon": 106.6510}
+          ],
+          "vehicle_count": 100
+        },
+        {
+          "points": [
+            {"lat": 10.8020, "lon": 106.6520},
+            {"lat": 10.8025, "lon": 106.6525}
+          ],
+          "vehicle_count": 120
+        },
+        {
+          "points": [
+            {"lat": 10.8035, "lon": 106.6535},
+            {"lat": 10.8038, "lon": 106.6538}
+          ],
+          "vehicle_count": 90
+        }
+      ],
+      "expected_avoidance": 0.9,
+      "direction": "diagonal"
+    },
+    {
+      "id": 6,
+      "name": "Short-6: Light congestion (North route)",
+      "category": "short_distance",
+      "start_lat": 10.8050,
+      "start_lon": 106.6500,
+      "end_lat": 10.8090,
+      "end_lon": 106.6540,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8065, "lon": 106.6515},
+            {"lat": 10.8070, "lon": 106.6520}
+          ],
+          "vehicle_count": 60
+        }
+      ],
+      "expected_avoidance": 0.8,
+      "direction": "north_south"
+    },
+    {
+      "id": 7,
+      "name": "Short-7: No congestion (Diagonal NE)",
+      "category": "short_distance",
+      "start_lat": 10.7990,
+      "start_lon": 106.6490,
+      "end_lat": 10.8030,
+      "end_lon": 106.6540,
+      "congestion": [],
+      "expected_distance": "< 800m",
+      "direction": "diagonal"
+    },
+    {
+      "id": 8,
+      "name": "Short-8: Medium congestion (Central)",
+      "category": "short_distance",
+      "start_lat": 10.8015,
+      "start_lon": 106.6515,
+      "end_lat": 10.8055,
+      "end_lon": 106.6560,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8030, "lon": 106.6530},
+            {"lat": 10.8035, "lon": 106.6535}
+          ],
+          "vehicle_count": 85
+        },
+        {
+          "points": [
+            {"lat": 10.8042, "lon": 106.6545},
+            {"lat": 10.8046, "lon": 106.6550}
+          ],
+          "vehicle_count": 75
+        }
+      ],
+      "expected_avoidance": 0.85,
+      "direction": "diagonal"
+    },
+    {
+      "id": 9,
+      "name": "Short-9: Light congestion (West side)",
+      "category": "short_distance",
+      "start_lat": 10.8000,
+      "start_lon": 106.6450,
+      "end_lat": 10.8040,
+      "end_lon": 106.6495,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8020, "lon": 106.6470},
+            {"lat": 10.8024, "lon": 106.6475}
+          ],
+          "vehicle_count": 55
+        }
+      ],
+      "expected_avoidance": 0.8,
+      "direction": "diagonal"
+    },
+    {
+      "id": 10,
+      "name": "Short-10: No congestion (East side)",
+      "category": "short_distance",
+      "start_lat": 10.8005,
+      "start_lon": 106.6550,
+      "end_lat": 10.8048,
+      "end_lon": 106.6595,
+      "congestion": [],
+      "expected_distance": "< 750m",
+      "direction": "diagonal"
+    },
+    {
+      "id": 11,
+      "name": "Medium-1: No congestion (North-South)",
+      "category": "medium_distance",
+      "start_lat": 10.7950,
+      "start_lon": 106.6450,
+      "end_lat": 10.8100,
+      "end_lon": 106.6600,
+      "congestion": [],
+      "expected_distance": "< 3000m",
+      "direction": "north_south"
+    },
+    {
+      "id": 12,
+      "name": "Medium-2: Light congestion (1 zone)",
+      "category": "medium_distance",
+      "start_lat": 10.7940,
+      "start_lon": 106.6440,
+      "end_lat": 10.8110,
+      "end_lon": 106.6610,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8000, "lon": 106.6500},
+            {"lat": 10.8020, "lon": 106.6520}
+          ],
+          "vehicle_count": 100
+        }
+      ],
+      "expected_avoidance": 0.85,
+      "direction": "diagonal"
+    },
+    {
+      "id": 13,
+      "name": "Medium-3: Heavy congestion (3 zones)",
+      "category": "medium_distance",
+      "start_lat": 10.7960,
+      "start_lon": 106.6460,
+      "end_lat": 10.8120,
+      "end_lon": 106.6620,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7980, "lon": 106.6480},
+            {"lat": 10.7990, "lon": 106.6490}
+          ],
+          "vehicle_count": 150
+        },
+        {
+          "points": [
+            {"lat": 10.8040, "lon": 106.6540},
+            {"lat": 10.8050, "lon": 106.6550}
+          ],
+          "vehicle_count": 120
+        },
+        {
+          "points": [
+            {"lat": 10.8080, "lon": 106.6580},
+            {"lat": 10.8090, "lon": 106.6590}
+          ],
+          "vehicle_count": 130
+        }
+      ],
+      "expected_avoidance": 0.9,
+      "direction": "diagonal"
+    },
+    {
+      "id": 14,
+      "name": "Medium-4: No congestion (East-West)",
+      "category": "medium_distance",
+      "start_lat": 10.8000,
+      "start_lon": 106.6400,
+      "end_lat": 10.8020,
+      "end_lon": 106.6600,
+      "congestion": [],
+      "expected_distance": "< 2500m",
+      "direction": "east_west"
+    },
+    {
+      "id": 15,
+      "name": "Medium-5: Medium congestion (2 zones dispersed)",
+      "category": "medium_distance",
+      "start_lat": 10.7945,
+      "start_lon": 106.6445,
+      "end_lat": 10.8105,
+      "end_lon": 106.6605,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7970, "lon": 106.6470},
+            {"lat": 10.7980, "lon": 106.6480}
+          ],
+          "vehicle_count": 110
+        },
+        {
+          "points": [
+            {"lat": 10.8060, "lon": 106.6560},
+            {"lat": 10.8070, "lon": 106.6570}
+          ],
+          "vehicle_count": 95
+        }
+      ],
+      "expected_avoidance": 0.85,
+      "direction": "diagonal"
+    },
+    {
+      "id": 16,
+      "name": "Medium-6: Light congestion (Near end)",
+      "category": "medium_distance",
+      "start_lat": 10.7935,
+      "start_lon": 106.6435,
+      "end_lat": 10.8095,
+      "end_lon": 106.6595,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8070, "lon": 106.6570},
+            {"lat": 10.8080, "lon": 106.6580}
+          ],
+          "vehicle_count": 80
+        }
+      ],
+      "expected_avoidance": 0.8,
+      "direction": "diagonal"
+    },
+    {
+      "id": 17,
+      "name": "Medium-7: No congestion (West to East)",
+      "category": "medium_distance",
+      "start_lat": 10.8010,
+      "start_lon": 106.6420,
+      "end_lat": 10.8030,
+      "end_lon": 106.6620,
+      "congestion": [],
+      "expected_distance": "< 2400m",
+      "direction": "east_west"
+    },
+    {
+      "id": 18,
+      "name": "Medium-8: Heavy congestion (4 zones)",
+      "category": "medium_distance",
+      "start_lat": 10.7955,
+      "start_lon": 106.6455,
+      "end_lat": 10.8115,
+      "end_lon": 106.6615,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7975, "lon": 106.6475},
+            {"lat": 10.7985, "lon": 106.6485}
+          ],
+          "vehicle_count": 140
+        },
+        {
+          "points": [
+            {"lat": 10.8015, "lon": 106.6515},
+            {"lat": 10.8025, "lon": 106.6525}
+          ],
+          "vehicle_count": 160
+        },
+        {
+          "points": [
+            {"lat": 10.8055, "lon": 106.6555},
+            {"lat": 10.8065, "lon": 106.6565}
+          ],
+          "vehicle_count": 125
+        },
+        {
+          "points": [
+            {"lat": 10.8090, "lon": 106.6590},
+            {"lat": 10.8098, "lon": 106.6598}
+          ],
+          "vehicle_count": 110
+        }
+      ],
+      "expected_avoidance": 0.92,
+      "direction": "diagonal"
+    },
+    {
+      "id": 19,
+      "name": "Medium-9: Medium congestion (Adjacent zones)",
+      "category": "medium_distance",
+      "start_lat": 10.7965,
+      "start_lon": 106.6465,
+      "end_lat": 10.8125,
+      "end_lon": 106.6625,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8030, "lon": 106.6530},
+            {"lat": 10.8040, "lon": 106.6540}
+          ],
+          "vehicle_count": 105
+        },
+        {
+          "points": [
+            {"lat": 10.8042, "lon": 106.6542},
+            {"lat": 10.8052, "lon": 106.6552}
+          ],
+          "vehicle_count": 95
+        }
+      ],
+      "expected_avoidance": 0.88,
+      "direction": "diagonal"
+    },
+    {
+      "id": 20,
+      "name": "Medium-10: Light congestion (Near start)",
+      "category": "medium_distance",
+      "start_lat": 10.7948,
+      "start_lon": 106.6448,
+      "end_lat": 10.8108,
+      "end_lon": 106.6608,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7960, "lon": 106.6460},
+            {"lat": 10.7970, "lon": 106.6470}
+          ],
+          "vehicle_count": 75
+        }
+      ],
+      "expected_avoidance": 0.82,
+      "direction": "diagonal"
+    },
+    {
+      "id": 21,
+      "name": "Long-1: No congestion (Full diagonal)",
+      "category": "long_distance",
+      "start_lat": 10.7900,
+      "start_lon": 106.6400,
+      "end_lat": 10.8200,
+      "end_lon": 106.6700,
+      "congestion": [],
+      "expected_distance": "< 5500m",
+      "direction": "diagonal"
+    },
+    {
+      "id": 22,
+      "name": "Long-2: Heavy congestion (4 zones distributed)",
+      "category": "long_distance",
+      "start_lat": 10.7880,
+      "start_lon": 106.6380,
+      "end_lat": 10.8220,
+      "end_lon": 106.6720,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7950, "lon": 106.6450},
+            {"lat": 10.7970, "lon": 106.6470}
+          ],
+          "vehicle_count": 180
+        },
+        {
+          "points": [
+            {"lat": 10.8050, "lon": 106.6550},
+            {"lat": 10.8080, "lon": 106.6580}
+          ],
+          "vehicle_count": 200
+        },
+        {
+          "points": [
+            {"lat": 10.8120, "lon": 106.6620},
+            {"lat": 10.8140, "lon": 106.6640}
+          ],
+          "vehicle_count": 150
+        },
+        {
+          "points": [
+            {"lat": 10.8170, "lon": 106.6670},
+            {"lat": 10.8190, "lon": 106.6690}
+          ],
+          "vehicle_count": 100
+        }
+      ],
+      "expected_avoidance": 0.93,
+      "direction": "diagonal"
+    },
+    {
+      "id": 23,
+      "name": "Long-3: Light congestion (1 zone center)",
+      "category": "long_distance",
+      "start_lat": 10.7890,
+      "start_lon": 106.6390,
+      "end_lat": 10.8210,
+      "end_lon": 106.6710,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8040, "lon": 106.6540},
+            {"lat": 10.8060, "lon": 106.6560}
+          ],
+          "vehicle_count": 120
+        }
+      ],
+      "expected_avoidance": 0.85,
+      "direction": "diagonal"
+    },
+    {
+      "id": 24,
+      "name": "Long-4: No congestion (North-South)",
+      "category": "long_distance",
+      "start_lat": 10.7880,
+      "start_lon": 106.6500,
+      "end_lat": 10.8220,
+      "end_lon": 106.6520,
+      "congestion": [],
+      "expected_distance": "< 4000m",
+      "direction": "north_south"
+    },
+    {
+      "id": 25,
+      "name": "Long-5: Medium congestion (2 zones)",
+      "category": "long_distance",
+      "start_lat": 10.7895,
+      "start_lon": 106.6395,
+      "end_lat": 10.8205,
+      "end_lon": 106.6705,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7980, "lon": 106.6480},
+            {"lat": 10.8000, "lon": 106.6500}
+          ],
+          "vehicle_count": 140
+        },
+        {
+          "points": [
+            {"lat": 10.8140, "lon": 106.6640},
+            {"lat": 10.8160, "lon": 106.6660}
+          ],
+          "vehicle_count": 130
+        }
+      ],
+      "expected_avoidance": 0.88,
+      "direction": "diagonal"
+    },
+    {
+      "id": 26,
+      "name": "Long-6: Heavy congestion (5 zones)",
+      "category": "long_distance",
+      "start_lat": 10.7885,
+      "start_lon": 106.6385,
+      "end_lat": 10.8215,
+      "end_lon": 106.6715,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7930, "lon": 106.6430},
+            {"lat": 10.7950, "lon": 106.6450}
+          ],
+          "vehicle_count": 170
+        },
+        {
+          "points": [
+            {"lat": 10.8010, "lon": 106.6510},
+            {"lat": 10.8030, "lon": 106.6530}
+          ],
+          "vehicle_count": 190
+        },
+        {
+          "points": [
+            {"lat": 10.8080, "lon": 106.6580},
+            {"lat": 10.8100, "lon": 106.6600}
+          ],
+          "vehicle_count": 160
+        },
+        {
+          "points": [
+            {"lat": 10.8140, "lon": 106.6640},
+            {"lat": 10.8158, "lon": 106.6658}
+          ],
+          "vehicle_count": 145
+        },
+        {
+          "points": [
+            {"lat": 10.8180, "lon": 106.6680},
+            {"lat": 10.8198, "lon": 106.6698}
+          ],
+          "vehicle_count": 120
+        }
+      ],
+      "expected_avoidance": 0.95,
+      "direction": "diagonal"
+    },
+    {
+      "id": 27,
+      "name": "Long-7: No congestion (East-West)",
+      "category": "long_distance",
+      "start_lat": 10.8000,
+      "start_lon": 106.6350,
+      "end_lat": 10.8020,
+      "end_lon": 106.6750,
+      "congestion": [],
+      "expected_distance": "< 4500m",
+      "direction": "east_west"
+    },
+    {
+      "id": 28,
+      "name": "Long-8: Light congestion (2 zones far apart)",
+      "category": "long_distance",
+      "start_lat": 10.7892,
+      "start_lon": 106.6392,
+      "end_lat": 10.8212,
+      "end_lon": 106.6712,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7940, "lon": 106.6440},
+            {"lat": 10.7955, "lon": 106.6455}
+          ],
+          "vehicle_count": 90
+        },
+        {
+          "points": [
+            {"lat": 10.8165, "lon": 106.6665},
+            {"lat": 10.8180, "lon": 106.6680}
+          ],
+          "vehicle_count": 85
+        }
+      ],
+      "expected_avoidance": 0.86,
+      "direction": "diagonal"
+    },
+    {
+      "id": 29,
+      "name": "Long-9: Medium congestion (3 zones sequential)",
+      "category": "long_distance",
+      "start_lat": 10.7888,
+      "start_lon": 106.6388,
+      "end_lat": 10.8218,
+      "end_lon": 106.6718,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.7960, "lon": 106.6460},
+            {"lat": 10.7980, "lon": 106.6480}
+          ],
+          "vehicle_count": 135
+        },
+        {
+          "points": [
+            {"lat": 10.8060, "lon": 106.6560},
+            {"lat": 10.8080, "lon": 106.6580}
+          ],
+          "vehicle_count": 155
+        },
+        {
+          "points": [
+            {"lat": 10.8150, "lon": 106.6650},
+            {"lat": 10.8170, "lon": 106.6670}
+          ],
+          "vehicle_count": 125
+        }
+      ],
+      "expected_avoidance": 0.9,
+      "direction": "diagonal"
+    },
+    {
+      "id": 30,
+      "name": "Long-10: Heavy congestion (Central corridor)",
+      "category": "long_distance",
+      "start_lat": 10.7898,
+      "start_lon": 106.6398,
+      "end_lat": 10.8208,
+      "end_lon": 106.6708,
+      "congestion": [
+        {
+          "points": [
+            {"lat": 10.8020, "lon": 106.6520},
+            {"lat": 10.8040, "lon": 106.6540}
+          ],
+          "vehicle_count": 175
+        },
+        {
+          "points": [
+            {"lat": 10.8045, "lon": 106.6545},
+            {"lat": 10.8065, "lon": 106.6565}
+          ],
+          "vehicle_count": 185
+        },
+        {
+          "points": [
+            {"lat": 10.8070, "lon": 106.6570},
+            {"lat": 10.8090, "lon": 106.6590}
+          ],
+          "vehicle_count": 165
+        },
+        {
+          "points": [
+            {"lat": 10.8095, "lon": 106.6595},
+            {"lat": 10.8115, "lon": 106.6615}
+          ],
+          "vehicle_count": 150
+        }
+      ],
+      "expected_avoidance": 0.92,
+      "direction": "diagonal"
+    }
+  ]
+}

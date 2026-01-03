@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-29 16:13:31",
+  "timestamp": "2026-01-02 21:07:17",
   "test_suite": {
     "total_cases": 30,
     "coverage": {
@@ -35,9 +35,9 @@
     "avoidance": 1.0
   },
   "performance": {
-    "avg_response_time": 0.13505477746327715,
-    "min_response_time": 0.06349611282348633,
-    "max_response_time": 0.2516462802886963
+    "avg_response_time": 0.14580523014068605,
+    "min_response_time": 0.06211042404174805,
+    "max_response_time": 0.7071471214294434
   },
   "bpr_accuracy": {
     "mean_absolute_error": 0.4147008813370846,
@@ -47,7 +47,7 @@
     "success_rate": 0.9583333333333334,
     "avg_detour": 0.985058983234627,
     "avg_complexity": 44.78260869565217,
-    "response_cv": 0.33259907259259247,
+    "response_cv": 0.6027254991473222,
     "overall_score": 90.33333333333334
   },
   "score_breakdown": {
